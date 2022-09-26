@@ -31,17 +31,14 @@ page_params = '&page={}'
 response = sess.get(f'{base_url}?{query_params}')
 soup = BeautifulSoup(response.text, 'lxml')
 max_page = soup.find(attrs={'data-qa': 'pager-block'}).find_all(attrs={'data-qa': 'pager-page'})[-1].text
-
-print(max_page)
-
+data = {
+    'data': []
+}
 for page in range(int(max_page)):
     response = sess.get(f'{base_url}?{query_params}&{page_params.format(page)}')
 
     soup = BeautifulSoup(response.text, 'lxml')
     links = soup.find_all(attrs={'data-qa': 'serp-item__title'})
-    data = {
-        'data': []
-    }
 
     for link in tqdm.tqdm(links):
         title = link.text
