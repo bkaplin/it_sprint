@@ -30,7 +30,12 @@ query_params = 'text=python+%D1%80%D0%B0%D0%B7%D1%80%D0%B0%D0%B1%D0%BE%D1%82%D1%
 page_params = '&page={}'
 response = sess.get(f'{base_url}?{query_params}')
 soup = BeautifulSoup(response.text, 'lxml')
-max_page = soup.find(attrs={'data-qa': 'pager-block'}).find_all(attrs={'data-qa': 'pager-page'})[-1].text
+
+try:
+    max_page = soup.find(attrs={'data-qa': 'pager-block'}).find_all(attrs={'data-qa': 'pager-page'})[-1].text
+except:
+    max_page = 1
+
 data = {
     'data': []
 }
